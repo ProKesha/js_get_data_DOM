@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const nodes = Array.from(document.querySelectorAll('.population'));
   const numbers = nodes
-    .map((n) => n.textContent.replace(/,/g, '').trim())
+    .map((n) => n.textContent.replace(/[^\d]/g, '').trim())
     .map((v) => Number(v))
     .filter((n) => Number.isFinite(n));
 

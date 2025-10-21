@@ -2,9 +2,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   const nodes = Array.from(document.querySelectorAll('.population'));
-  const numbers = nodes
-    .map((n) => n.textContent.replace(/[^\d]/g, '').trim())
-    .map((v) => Number(v))
+  const raw = nodes.map((n) => n.textContent.trim()).filter((n) => n !== '');
+
+  const numbers = raw
+    .map((n) => n.replace(/[^\d]/g, ''))
+    .filter((n) => n !== '')
+    .map((n) => Number(n))
     .filter((n) => Number.isFinite(n));
 
   if (!numbers.length) {
@@ -14,7 +17,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const total = numbers.reduce((sum, n) => sum + n, 0);
   const average = Math.round(total / numbers.length);
 
-  const fmt = (n) => n.toLocaleString('en-US');
+  const sample = nodes[0].textContent;
+  const separator = sample.includes(',')
+    ? ','
+    : sample.includes('.')
+      ? '.'
+      : ' ';
+
+  const fmt = (n) => n.toLocaleString('en-US').replace(/,/g, separator);
 
   const totalE1 = document.querySelector('.total-population');
   const avgE1 = document.querySelector('.average-population');
